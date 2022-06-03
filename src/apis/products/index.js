@@ -1,4 +1,11 @@
 import express from "express";
+import {
+  getProducts,
+  writeProducts,
+  getReviews,
+  writeReviews,
+  getProductsReadableStream,
+} from "../../lib/fs-tools.js";
 import createError from "http-errors";
 import ProductModel from "./model.js";
 import q2m from "query-to-mongo";
@@ -32,7 +39,7 @@ productsRouter.post(
   async (req, res, next) => {
     try {
       console.log("FILE: ", req.file);
-      const products = await find();
+      const products = await ProductModel.find();
       const index = products.findIndex(
         (product) => product._id === req.params.productId
       );
