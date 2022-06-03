@@ -1,6 +1,7 @@
 import express from 'express'
 import createError from 'http-errors'
 import ReviewsModel from './model.js'
+import ProductsModel from '../products/model.js'
 
 const reviewsRouter = express.Router()
 
@@ -32,6 +33,11 @@ reviewsRouter.post('/', async (req, res, next) => {
   try {
     const newReview = await new ReviewsModel(req.body)
     const { _id } = await newReview.save()
+    const product = await ProductsModel.findByIdAndUpdate(
+      req.body.productId,
+      { $push: { reviews: _id } },
+      { new: true, runValidators: true }
+    )
     res.status(201).send({ _id })
   } catch (error) {
     console.log(error)

@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const { Schema, model } = mongoose;
+const { Schema, model } = mongoose
 
 const productsSchema = new Schema(
   {
@@ -10,9 +10,9 @@ const productsSchema = new Schema(
     imageUrl: { type: String, required: true },
     price: { type: Number, required: true },
     category: { type: String, required: true },
-    reviews: [{}],
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
   },
   { timestamps: true }
-);
+)
 
-export default model("Product", productsSchema);
+export default model('Product', productsSchema)
