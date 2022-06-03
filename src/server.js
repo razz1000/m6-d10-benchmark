@@ -7,6 +7,9 @@ import {
   genericErrorHandler,
   notFoundHandler,
 } from "./errorHandlers.js";
+import reviewsRouter from "./apis/reviews/index.js";
+import productsRouter from "./apis/products/index.js";
+import cartRouter from "./apis/cart/index.js";
 
 const server = express();
 const port = process.env.PORT || 3001;
@@ -17,6 +20,10 @@ server.use(cors());
 server.use(express.json());
 
 // ******************************************************* ENDPOINTS ***********************************************
+
+server.use("/reviews", reviewsRouter);
+server.use("/products", productsRouter);
+server.use("/carts", cartRouter);
 
 // ***************************************************** ERROR HANDLERS ********************************************
 

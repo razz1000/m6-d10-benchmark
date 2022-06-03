@@ -10,7 +10,7 @@ const productsSchema = new Schema(
     imageUrl: { type: Date, required: true },
     price: { type: Number, required: true },
     category: { type: String, required: true },
-    reviews: { type: String, required: true },
+    reviews: [{}],
   },
   { timestamps: true }
 );
