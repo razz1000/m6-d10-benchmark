@@ -33,7 +33,6 @@ cartRouter.post("/:userId/cart", async (req, res, next) => {
         { $inc: { "products.$.quantity": quantity } },
         { new: true }
       )
-      res.send(updatedCart)
     }
     //Add the product to the cart
     const newCart = await CartsModel.findOneAndUpdate(
@@ -55,7 +54,7 @@ cartRouter.post("/:userId/cart", async (req, res, next) => {
 })
 
 //Remove a product from the cart
-cartRouter.delete("/:userId/cart/:productId", async (req, res, next) => {
+cartRouter.delete("/:userId/cart/:cartId", async (req, res, next) => {
   try {
     const { userId, productId } = req.params
     const user = await UsersModel.findById(userId)
@@ -77,8 +76,9 @@ cartRouter.delete("/:userId/cart/:productId", async (req, res, next) => {
       //Remove the product
       const updatedCart = await CartsModel.findOneAndUpdate(
         { owner: userId, "products.productId": productId, status: "active" },
-        { $inc: { "products.$.quantity": -1 } },
-        { new: true }
+        { $pull: { products: { _id: req.params.productId } } },
+
+        { new: true, runValidators: true }
       )
     }
 
