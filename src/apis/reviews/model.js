@@ -5,7 +5,7 @@ const reviewSchema = new Schema(
   {
     comment: { type: String, required: true },
     rate: { type: Number, required: true }
-    // productId: { type: mongoose.Types.ObjectId, ref: 'Product' }
+    // productId: { type: Schema.Types.ObjectId }
   },
   { timestamps: true }
 )
