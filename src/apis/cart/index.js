@@ -11,15 +11,12 @@ cartRouter.post('/:userId/cart', async (req, res, next) => {
   try {
     const { userId } = req.params
     const { productId, quantity } = req.body.product
-    // console.log('USER ID', userId, 'PRODUCT ID', productId)
     const user = await UsersModel.findById(userId)
-    console.log('user', user)
     if (!user) {
       return next(createError(404, 'User not found'))
     }
     //Check if the product exists
     const product = await ProductsModel.findById(productId)
-    console.log('product', product)
     if (!product) {
       return next(createError(404, 'Product not found'))
     }
@@ -29,7 +26,7 @@ cartRouter.post('/:userId/cart', async (req, res, next) => {
       'products.productId': productId,
       status: 'active'
     })
-    // console.log('CART', cart)
+    console.log(cart)
     if (cart) {
       //Update the quantity
       const updatedCart = await CartsModel.findOneAndUpdate(
@@ -41,8 +38,9 @@ cartRouter.post('/:userId/cart', async (req, res, next) => {
       res.send(cart)
     } else {
       //Add the product to the cart
+      console.log('here')
       const newCart = await CartsModel.findOneAndUpdate(
-        { owner: userId, 'products.productId': productId, status: 'active' },
+        { owner: userId, status: 'active' },
         {
           $push: {
             products: {
@@ -53,11 +51,11 @@ cartRouter.post('/:userId/cart', async (req, res, next) => {
         },
         { new: true, upsert: true }
       )
-      console.log(newCart)
       if (!newCart) return next(createError(404, `NewCart Empty`))
       res.send(newCart)
     }
   } catch (error) {
+    console.log(error)
     next(error)
   }
 })
